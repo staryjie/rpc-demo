@@ -60,3 +60,6 @@ func main() {
 	}
 	fmt.Println(response)
 }
+
+// 基于nc命令测试json on tcp
+// echo -e '{"method": "HelloService.Hello", "params": ["alice"], "id": 1}' | nc localhost 1234
