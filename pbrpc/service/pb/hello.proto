@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package hello;
+option go_package="gitee.com/go-course/rpc-g7/pbrpc/service";
+
+message Request {
+    string value = 1;
+}
+
+message Response {
+    string value = 1;
+}
