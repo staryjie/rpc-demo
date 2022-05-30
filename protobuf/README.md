@@ -9,6 +9,9 @@ cd rpc-demo/protobuf/pb
 # 通过protoc结合protoc-gen-go工具生成go代码
 protoc -I=. --go_out=. --go_opt=module="github.com/staryjie/rpc-demo/protobuf/pb" ./hello.proto
 
+# 为所有当前目录下的proto文件生成代码
+protoc -I=. --go_out=. --go_opt=module="github.com/staryjie/rpc-demo/protobuf/pb" ./*.proto
+
 # 或者
 cd rpc-demo/protobuf
 protoc -I=./pb/ --go_out=./pb/ --go_opt=module="github.com/staryjie/rpc-demo/protobuf/pb" hello.proto
