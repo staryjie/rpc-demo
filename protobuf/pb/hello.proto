@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+
+package hello;
+option go_package = "github.com/staryjie/rpc-demo/protobuf/pb";
+
+message String {
+    string value = 1;
+}
