@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package hello;
+option go_package="github.com/staryjie/rpc-demo/grpc/simple/server/pb";
+
+// 定义RPC
+service HelloService {
+    rpc Hello(Request) returns(Response);
+
+    rpc Channel (stream Request) returns (stream Response) {}
+}
+
+message Request {
+    string value = 1;
+}
+
+message Response {
+    string value = 1;
+}

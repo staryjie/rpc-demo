@@ -3,6 +3,11 @@ syntax = "proto3";
 package hello;
 option go_package="github.com/staryjie/rpc-demo/pbrpc/service";
 
+// 定义基于gRPC的远程调用函数
+service HelloService {
+    rpc Hello (Request) returns (Response);
+}
+
 message Request {
     string value = 1;
 }
