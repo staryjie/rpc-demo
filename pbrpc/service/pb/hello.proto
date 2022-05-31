@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package hello;
-option go_package="gitee.com/go-course/rpc-g7/pbrpc/service";
+option go_package="github.com/staryjie/rpc-demo/pbrpc/service";
 
 message Request {
     string value = 1;
