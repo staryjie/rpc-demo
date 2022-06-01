@@ -6,8 +6,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/staryjie/rpc-demo/grpc/middleware/server"
 	"github.com/staryjie/rpc-demo/grpc/simple/server/pb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 func main() {
@@ -20,7 +22,11 @@ func main() {
 	client := pb.NewHelloServiceClient(conn)
 
 	// req <--> resp
-	resp, err := client.Hello(context.Background(), &pb.Request{Value: "Jack"})
+	crendential := server.NewClientCredential("admin", "123456")
+
+	ctx := metadata.NewOutgoingContext(context.Background(), crendential)
+
+	resp, err := client.Hello(ctx, &pb.Request{Value: "Jack From method Hello"})
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +34,7 @@ func main() {
 	fmt.Println(resp.Value)
 
 	// stream
-	stream, err := client.Channel(context.Background())
+	stream, err := client.Channel(ctx)
 	if err != nil {
 		panic(err)
 	}

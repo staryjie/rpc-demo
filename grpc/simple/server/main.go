@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/staryjie/rpc-demo/grpc/middleware/server"
 	"github.com/staryjie/rpc-demo/grpc/simple/server/pb"
 	"google.golang.org/grpc"
 )
@@ -64,7 +65,13 @@ func main() {
 	// s grpc.ServiceRegistry  gRPC Server
 	// srv HelloService        实现类
 
-	server := grpc.NewServer()
+	// 传递认证的中间件
+	reqAuth := server.NewAuthUnaryServerInterceptor()
+	streamAuth := server.NewAuthStreamServerInterception()
+	server := grpc.NewServer(
+		grpc.UnaryInterceptor(reqAuth),
+		grpc.StreamInterceptor(streamAuth),
+	)
 
 	// 将HelloService这个实现类注册到gRPC server
 	pb.RegisterHelloServiceServer(server, new(HelloServiceServer))
