@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"net"
 
@@ -28,6 +29,35 @@ func (s *HelloServiceServer) Hello(ctx context.Context, req *pb.Request) (*pb.Re
 	return &pb.Response{
 		Value: fmt.Sprintf("Hello, %s", req.Value),
 	}, nil
+}
+func (s *HelloServiceServer) Channel(stream pb.HelloService_ChannelServer) error {
+	// 这个for循环只请求单个客户端请求，gRPC框架会为每个客户端分配一个goroutie
+	for {
+		// 接收请求
+		req, err := stream.Recv()
+		if err != nil {
+			// err如果是io.EOF表示当前客户端关闭
+			if err == io.EOF {
+				log.Printf("Client Closed!")
+			} else {
+				log.Printf("Recv error, %s", err)
+				return nil
+			}
+			return err
+		}
+
+		// 响应请求
+		resp := &pb.Response{Value: fmt.Sprintf("Hello, %s", req.Value)}
+
+		err = stream.Send(resp)
+		if err != nil {
+			if err == io.EOF {
+				log.Printf("Client Closed!")
+				return nil
+			}
+			return err
+		}
+	}
 }
 
 func main() {
